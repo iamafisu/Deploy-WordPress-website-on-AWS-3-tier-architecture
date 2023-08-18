@@ -1,11 +1,26 @@
 # WordPress Setup on Amazon Linux 2
 
-This repository contains a set of scripts to simplify the installation and configuration of a WordPress website on an EC2 instance using Amazon Linux 2. These scripts automate the process of setting up the necessary components, including Apache web server, PHP 7.4, MySQL 5.7, and WordPress. 
+This repository contains a set of scripts to simplify the installation and configuration of a WordPress website on an EC2 instance using Amazon Linux 2. These scripts automate the process of setting up the necessary components, including Apache web server, PHP 7.4, MySQL 5.7, EFS and WordPress. 
 
 ## Prerequisites
 
-Before you begin, ensure that you have:
+Before you begin, ensure that you have following AWS resources:
 
+- VPC
+- Internet Gateway
+- Subnets (public & private)
+- Route Tables (public & private)
+- Security Groups (ALB_SG, SSH_SG, WEBSERVER_SG, DATABASE_SG & EFS_SG)
+- RDS
+- EFS
+- Mount Target
+- EC2 Instance
+- ALB
+- Target Group
+- Route 53
+- Certificate Manager
+- Launch Template
+- ASG
 - An Amazon Linux 2 instance with administrative privileges.
 - Access to an Amazon Elastic File System (EFS) for shared storage.
 
