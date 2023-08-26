@@ -11,26 +11,26 @@ Before you begin, ensure that you perform the following:
 - create Route Tables (public & private) and associate the public subnets to the public route table and private subnets to the private route table.
 - Create 5 Security Groups (ALB_SG, SSH_SG, WEBSERVER_SG, DATABASE_SG & EFS_SG)
   ALB_SG
-    Open port = 80 & 443 from/source = 0.0.0.0/0
+    (Open port = 80 & 443 from/source = 0.0.0.0/0)
   SSH_SG
-    Open port = 22 from/source = MyIP
+    (Open port = 22 from/source = MyIP)
   WEBSERVER_SG
-    Open port = 80 & 443 from/source = ALB_SG
-    Open port = 22 from/source = SSH_SG
+    (Open port = 80 & 443 from/source = ALB_SG
+    Open port = 22 from/source = SSH_SG)
   DATABASE_SG
-    Open port = 3306 from/source = WEBSERVER_SG
+    (Open port = 3306 from/source = WEBSERVER_SG)
   EFS_SG
-    Open port = 2049 from/source = WEBSERVER_SG, EFS_SG
-    Open port = 22 from/source = SSH_SG
+    (Open port = 2049 from/source = WEBSERVER_SG, EFS_SG
+    Open port = 22 from/source = SSH_SG)
 - Create RDS database: create subnet group
 - Create Elastic File System (EFS) with EFS mount target in the private subnet.
 - Create an auto-scaling group with a launch template to launch EC2 Instances.
 - Create an Application Load Balancer: create a target group for the ALB.
 - Register a new domain or use an existing domain with Route 53.
 - Request for an SSL certificate using the Certificate Manager.
-- Secure the website by adding the HTTPS listener in the ALB.
 
-#Note
+
+## Note
 - Enable DNS hostname in the vpc
 - Enable auto-assign public IPv4 address in the public subnets.
 
@@ -123,7 +123,11 @@ PASSWORD: "ENTER YOUR DATABASE PASSWORD"
 
 ```
 
-### 10. Restart the Web Server
+### 10. Securing the website
+- Secure the website by adding the HTTPS listener in the ALB.
+
+  
+### 11. Restart the Web Server
 
 ```bash
 service httpd restart
