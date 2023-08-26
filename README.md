@@ -4,25 +4,35 @@ This repository contains a set of scripts to simplify the installation and confi
 
 ## Prerequisites
 
-Before you begin, ensure that you have following AWS resources:
+Before you begin, ensure that you perform the following:
 
-- VPC
-- Internet Gateway
-- Subnets (public & private)
-- Route Tables (public & private)
-- Security Groups (ALB_SG, SSH_SG, WEBSERVER_SG, DATABASE_SG & EFS_SG)
-- RDS
-- EFS
-- Mount Target
-- EC2 Instance
-- ALB
-- Target Group
-- Route 53
-- Certificate Manager
-- Launch Template
-- ASG
-- An Amazon Linux 2 instance with administrative privileges.
-- Access to an Amazon Elastic File System (EFS) for shared storage.
+- Create a VPC with 4 private and 2 public subnets in two availability zones.
+- create an Internet Gateway and attach it to the VPC.
+- create Route Tables (public & private) and associate the public subnets to the public route table and private subnets to the private route table.
+- Create 5 Security Groups (ALB_SG, SSH_SG, WEBSERVER_SG, DATABASE_SG & EFS_SG)
+  ALB_SG
+    Open port = 80 & 443 from/source = 0.0.0.0/0
+  SSH_SG
+    Open port = 22 from/source = MyIP
+  WEBSERVER_SG
+    Open port = 80 & 443 from/source = ALB_SG
+    Open port = 22 from/source = SSH_SG
+  DATABASE_SG
+    Open port = 3306 from/source = WEBSERVER_SG
+  EFS_SG
+    Open port = 2049 from/source = WEBSERVER_SG, EFS_SG
+    Open port = 22 from/source = SSH_SG
+- Create RDS database: create subnet group
+- Create Elastic File System (EFS) with EFS mount target in the private subnet.
+- Create an auto-scaling group with a launch template to launch EC2 Instances.
+- Create an Application Load Balancer: create a target group for the ALB.
+- Register a new domain or use an existing domain with Route 53.
+- Request for an SSL certificate using the Certificate Manager.
+- Secure the website by adding the HTTPS listener in the ALB.
+
+#Note
+- Enable DNS hostname in the vpc
+- Enable auto-assign public IPv4 address in the public subnets.
 
 ## Steps to Set Up WordPress
 
@@ -88,13 +98,32 @@ cp -r wordpress/* /var/www/html/
 cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 ```
 
-### 8. Edit the wp-config.php File
+### 8. open the wp-config.php File
 
 ```bash
 nano /var/www/html/wp-config.php
 ```
 
-### 9. Restart the Web Server
+### 9.  Add and edit the wp-config.php File with the script
+
+```bash
+/* SSL Settings */
+define('FORCE_SSL_ADMIN', true);
+
+// Get true SSL status from AWS load balancer
+if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+  $_SERVER['HTTPS'] = '1';
+}
+```
+
+```bash
+DATABASE NAME: "ENTER YOUR DATABASE NAME"
+USERNAME: "ENTER YOUR USERNAME"
+PASSWORD: "ENTER YOUR DATABASE PASSWORD"
+
+```
+
+### 10. Restart the Web Server
 
 ```bash
 service httpd restart
