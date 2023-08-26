@@ -33,6 +33,7 @@ Before you begin, ensure that you perform the following:
 ## Note
 - Enable DNS hostname in the vpc
 - Enable auto-assign public IPv4 address in the public subnets.
+- You need to connect to the EC2 instances before executing the ff scripts using either bastion host or EC2 instance connect endpoint.
 
 ## Steps to Set Up WordPress
 
