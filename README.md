@@ -9,6 +9,7 @@ Before you begin, ensure that you perform the following:
 - Create a VPC with 4 private and 2 public subnets in two availability zones.
 - create an Internet Gateway and attach it to the VPC.
 - create Route Tables (public & private) and associate the public subnets to the public route table and private subnets to the private route table.
+- Create NAT Gateway in the public subnets and associate Elastic IPv4 address.
 - Create 5 Security Groups (ALB_SG, SSH_SG, WEBSERVER_SG, DATABASE_SG & EFS_SG)
   ALB_SG
     (Open port = 80 & 443 from/source = 0.0.0.0/0)
